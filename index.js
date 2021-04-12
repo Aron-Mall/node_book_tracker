@@ -3,6 +3,7 @@ const chalk = require("chalk");
 const books = require("./book.js");
 const fs = require('fs');
 
+
 //adding a book with add command
 
 yargs.command({
@@ -20,5 +21,21 @@ yargs.command({
 
   },
 });
+
+
+yargs.command({
+  command: "remove",
+  describe: "delete a book",
+  builder: {
+    title: {
+      describe: "Title of book to remove",
+      demandOption: true,
+      type: "string"
+    }
+  },
+  handler: function(argv){
+    books.removeBook(argv.title)
+  }
+})
 
 console.log(yargs.argv);

@@ -1,10 +1,32 @@
+const chalk = require('chalk');
 const fs = require('fs');
 
 const addBook = (title) => {
+  const books = loadBooks();
+
+  books.push({
+    title: title
+  });
+
   console.log(`adding the book ${title}`);
-  saveBook(title);
+  saveBooks(books);
 }
 
+
+const removeBook = (title) => {
+ 
+  const books = loadBooks();
+  const bookFound = books.find(book => book.title === title);
+  
+  if (!bookFound){
+    console.log("The book title was not found")
+  }
+
+  const filteredBooks = books.filter(book => book.title !== title);
+  saveBooks(filteredBooks)
+  console.log(chalk.green.inverse(`${title} has been removed`));
+
+}
 
 const loadBooks = () => {
 
@@ -20,13 +42,7 @@ const loadBooks = () => {
 
 }
 
-const saveBook = (title) => {
-
-  const books = loadBooks();
-
-  books.push({
-    title: title
-  });
+const saveBooks = (books) => {
 
   try{
     fs.writeFileSync('data.json', JSON.stringify(books))
@@ -38,5 +54,6 @@ const saveBook = (title) => {
 
 
 module.exports = {
-  addBook: addBook
+  addBook,
+  removeBook
 }
